@@ -1,0 +1,104 @@
+const express = require('express');
+const app = express();
+const joi = require('joi');
+//const crypto = require('crypto');
+const  mongoose = require('mongoose')
+app.use(express.json());
+const courses = [];
+mongoose.connect("mongodb+srv://Akash:05121998@cluster0.b9jwp.mongodb.net/?retryWrites=true&w=majority")
+.then(() => console.log("Connected To Database"))
+let count=1;
+
+// Middleware
+const validateBody = (req, res, next) => {
+  const schema = joi.object({
+    code: joi.string().min(4).required(),
+    name: joi.string().min(2).required(),
+  });
+  const input = schema.validate(req.body);
+
+  if (input.error) {
+    return res.status(400).send(input.error.details[0].message);
+  }
+
+  next();
+};
+
+// GET
+const getData = (req, res) => {
+  res.status(200).send(courses);
+};
+
+const getDataById = (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = courses.findIndex(item => item.id === id);
+
+  if (index === -1) res.status(404).send("Data Not Found");
+
+  res.send(courses[index]);
+};
+
+// POST
+const postData = (req, res) => {
+  const id = count++;
+  const newData = {
+   //id: crypto.randomInt(1,100),
+    id : id,
+    code: req.body.code,
+    name: req.body.name,
+  };
+  
+  courses.push(newData);
+  
+  res.status(201).send(courses);
+};
+
+// PUT
+const putDataById = (req, res) => {
+
+  const id = parseInt(req.params.id);
+  const index = courses.findIndex(item => item.id === id);
+  if (index === -1) res.status(404).send("Data Not Found");
+
+  courses[index].code = req.body.code;
+  courses[index].name = req.body.name;
+  res.status(200).send(courses[index]);
+};
+
+// PATCH
+const patchDataById = (req, res) => {
+
+  const id = parseInt(req.params.id);
+  const index = courses.findIndex(item => item.id === id);
+
+  if (index === -1) res.status(404).send("Data Not Found");
+
+  const patchData = req.body;
+  for (const key in patchData) {
+    if (patchData.hasOwnProperty(key)) {
+      courses[index][key] = patchData[key];
+    }
+  }
+  res.status(200).send(courses[index]);
+};
+
+//Delate
+const deleteDataById = ( req,res)=>{
+    
+    const id = parseInt(req.params.id);
+    const index= courses.findIndex(item => item.id === id) ;
+    if(index === -1)res.status(404).send("Data Not found")
+    courses.splice(index,1);
+    res.status(200).send("Deleted");
+}
+
+ app.get('/api/courses/', getData)
+ app.get('/api/courses/:id', getDataById);
+ app.delete('/api/courses/:id', deleteDataById);
+ 
+ app.post('/api/courses/', postData, app.use(validateBody));
+ app.put('/api/courses/:id', putDataById, app.use(validateBody))
+ app.patch('/api/courses/:id', patchDataById, app.use(validateBody))
+ 
+const port = 6000;
+app.listen(port, () => console.log(`Server Start & port:${port}`)); 

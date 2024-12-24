@@ -1,0 +1,3 @@
+Validate the mongoose Id's :  organisation Id, division Id and sub division Id.
+    const checkOrgId = mongoose.Types.ObjectId.isValid(req.params.orgId);
+    if (!checkOrgId) throw ({ status: false, error: new Error('Invalid organisation Id'), errorCode: 400 })

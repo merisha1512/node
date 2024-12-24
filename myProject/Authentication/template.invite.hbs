@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Message HTML Title</title>
+    <style>
+        #btn{  text-align: center;}
+        button{
+    background-color: #dee0f7;
+        font-size: 16px;
+        border: 1px solid #000;
+        border-radius: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        justify-items: center;
+        }
+        p{text-align: justify; font-size: 14px;}
+       
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Hi {{name}}!!</h2>  
+     <p>We are inviting you .</p>
+           
+    <div id="btn"> <button><a href="http://localhost:8000/auth/createUserOrAdmin?token={{token}}">Invitation </a></button>  
+      </div>
+       <p> If you don't want this invitation just ignore this Email.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Message HTML Title</title>
+    <style>
+        #btn{  text-align: center;}
+        button{
+    background-color: #dee0f7;
+        font-size: 16px;
+        border: 1px solid #000;
+        border-radius: 16px;
+        padding: 10px 20px;
+        cursor: pointer;
+        justify-items: center;
+        }
+        p{text-align: justify; font-size: 14px;}
+       
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Hi {{name}}!!</h2>  
+     <p>We are receive a request to rest your password. 
+        Kindly please click the reset password button.</p>
+           
+    <div id="btn"> <button><a href="http://localhost:8000/auth/resetPassword?token={{token}}">Reset Password </a></button>  
+      </div>
+       <p> If you did'nt make this request just ignore this message.
+        Otherwise you can reset you password. </p>
+    </div>
+  </body>
+</html>
